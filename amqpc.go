@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/sha1"
-	"encoding/base64"
 	"flag"
 	"fmt"
 	"log"
@@ -128,7 +126,7 @@ func startProducer(done chan error, body *string, messageCount, interval int) {
 
 	var i int = 1
 	for {
-		publish(p, body, i)
+		p.Publish(*exchange, *routingKey, *body)
 
 		i++
 		if messageCount != 0 && i > messageCount {
@@ -139,8 +137,4 @@ func startProducer(done chan error, body *string, messageCount, interval int) {
 	}
 
 	done <- nil
-}
-
-func publish(p *Producer, body *string, i int) {
-	p.Publish(*exchange, *routingKey, *body)
 }
